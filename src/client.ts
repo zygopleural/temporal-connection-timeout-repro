@@ -4,7 +4,19 @@ import { nanoid } from 'nanoid';
 
 async function run() {
   // Connect to the default Server location (localhost:7233)
-  const connection = await Connection.connect();
+  let connection: Connection
+  
+  try {
+    console.log("Creating connection", { time: new Date() });
+
+    connection = await Connection.connect({
+      connectTimeout: 1000,
+    });
+  } catch (error) {
+    console.error("Error creating connection", { time: new Date(), error });
+    throw error
+  }
+  
   // In production, pass options to configure TLS and other settings:
   // {
   //   address: 'foo.bar.tmprl.cloud',
